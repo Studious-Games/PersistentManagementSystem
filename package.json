@@ -1,0 +1,19 @@
+{
+  "name": "com.studious.persistentmanagementsystem",
+  "displayName": "Studious Persistent Management System",
+  "version": "1.0.0",
+  "unity": "2020.3",
+  "unityRelease": "0f1",
+  "description": "A small Library that helps manage persistent game objects across scenes.",
+  "keywords": [
+    "unity"
+  ],
+  "documentationUrl": "https://github.com/Studious-Games/PersistentManagementSystem/blob/master/README.md",
+  "changelogUrl": "https://github.com/Studious-Games/PersistentManagementSystem/blob/master/CHANGELOG.md",
+  "licensesUrl": "https://github.com/Studious-Games/PersistentManagementSystem/blob/master/LICENSE.md",
+  "hideInEditor": false,
+  "author": {
+    "name": "Studious Games"
+  },
+  "type": "library"
+}
