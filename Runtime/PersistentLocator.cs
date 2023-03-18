@@ -20,6 +20,11 @@ namespace Studious.PersistentManagement
             return _persitentObjects.Where(x => x.Type == t).Any();
         }
 
+        public static List<PersistentInstance> GetAll()
+        {
+            return _persitentObjects;
+        }
+
         /// <summary>
         /// 
         /// </summary>

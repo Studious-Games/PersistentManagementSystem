@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -21,13 +22,13 @@ namespace Studious.PersistentManagement
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            LoadSingletons(scene);
-            UnLoadSingletons(scene);
+            LoadPersistentComponents(scene);
+            UnLoadPersistentComponents(scene);
         }
 
-        private static void UnLoadSingletons(Scene scene)
+        private static void UnLoadPersistentComponents(Scene scene)
         {
-            //var scripts = SingletonLocator.GetAllBySceneUnload(scene).ToList();
+            //var scripts = PersistentLocator.GetAllBySceneUnload(scene).ToList();
 
             //foreach (var script in scripts)
             //{
@@ -36,14 +37,18 @@ namespace Studious.PersistentManagement
             //}
         }
 
-        private static void LoadSingletons(Scene scene)
+        private static void LoadPersistentComponents(Scene scene)
         {
-            //var scripts = SingletonLocator.GetAllBySceneLoad(scene).ToList();
+            List<PersistentInstance> testPI = PersistentLocator.GetAll();
 
-            //foreach (var script in scripts)
-            //{
+            var scripts = PersistentLocator.GetAllBySceneLoad(scene).ToList();
+
+            foreach (var script in scripts)
+            {
+                if(script.PersistentComponent == null)
+                    Debug.Log($"Component {script.Type}");
             //    script.ScriptType.Invoke(null, null);
-            //}
+            }
         }
 
         private static void OnApplicationQuit()
