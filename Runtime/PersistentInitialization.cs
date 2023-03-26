@@ -33,7 +33,7 @@ namespace Studious.PersistentManagement
                     if (attr.IsValidGroupName() && group == null)
                     {
                         GameObject go = new GameObject(attr.GroupName);
-                        //go.hideFlags|= HideFlags.HideInHierarchy;
+                        go.hideFlags|= HideFlags.HideInHierarchy;
                         MonoBehaviour.DontDestroyOnLoad(go);
                         group = go;
                     }
@@ -47,13 +47,6 @@ namespace Studious.PersistentManagement
                     pi.PersistentComponent = comp;
                 }
                 PersistentLocator.Register(pi);
-
-                //List<Component> results = new();
-                //pi.PersistentComponent.gameObject.GetComponents(results);
-
-                //var rr = 100;
-                //MonoBehaviour.Destroy(pi.PersistentComponent);
-
             }
         }
     }
