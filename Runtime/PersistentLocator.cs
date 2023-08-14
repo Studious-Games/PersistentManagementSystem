@@ -8,7 +8,7 @@ namespace Studious.PersistentManagement
 {
     public static class PersistentLocator 
     {
-        private static readonly List<PersistentInstance> _persitentObjects = new List<PersistentInstance>();
+        private static readonly Dictionary<Type, PersistentInstance> _persistentObjs = new();
 
         /// <summary>
         /// 
@@ -17,12 +17,12 @@ namespace Studious.PersistentManagement
         /// <returns></returns>
         public static bool IsRegistered(Type t)
         {
-            return _persitentObjects.Where(x => x.Type == t).Any();
+            return _persistentObjs.ContainsKey(t);
         }
 
-        public static List<PersistentInstance> GetAll()
+        public static Dictionary<Type, PersistentInstance> GetAll()
         {
-            return _persitentObjects;
+            return _persistentObjs;
         }
 
         /// <summary>
@@ -33,20 +33,17 @@ namespace Studious.PersistentManagement
         {
             if(IsRegistered(typeof(T)))
             {
-                var persistentComponent = Get(typeof(T));
-                _persitentObjects.Remove(persistentComponent);
+                Type key = typeof(T);
+                var value = _persistentObjs[key];
 
-                //Todo : Unregister component, if no more then remove object as well.
-
-                //if (persistentComponent.PersistentAttribute.KeepSeperate)
-                //{
-                //    MonoBehaviour.Destroy(persistentComponent.PersistentComponent.gameObject);
-                //}
-                //else
-                //{
-                //    MonoBehaviour.Destroy(persistentComponent.PersistentComponent);
-                //}
+                value.RemoveFromGroup();
+                _persistentObjs.Remove(key);
             }
+        }
+
+        public static void UnRegister(Type type)
+        {
+            _persistentObjs.Remove(type);
         }
 
         /// <summary>
@@ -59,12 +56,12 @@ namespace Studious.PersistentManagement
             if (IsRegistered(instance.Type))
                 throw new PersistentLocatorException($"{instance.Type.Name} has been already registered.");
 
-            _persitentObjects.Add(instance);
+            _persistentObjs.Add(instance.Type, instance);
         }
 
         private static PersistentInstance Get(Type type )
         {
-            return _persitentObjects.Where(item => item.Type == type).FirstOrDefault();
+            return _persistentObjs[type];
         }
 
         /// <summary>
@@ -74,10 +71,13 @@ namespace Studious.PersistentManagement
         /// <returns></returns>
         public static T Get<T>()
         {
-            if (!IsRegistered(typeof(T)))
-                return default;
+            if (_persistentObjs.TryGetValue(typeof(T), out PersistentInstance instance))
+            {
+                if (instance.PersistentComponent is T component)
+                    return component;
+            }
 
-            return _persitentObjects.Select(item => item.PersistentComponent).OfType<T>().FirstOrDefault(item => item.GetType() == typeof(T));
+            return default;
         }
 
         /// <summary>
@@ -87,7 +87,8 @@ namespace Studious.PersistentManagement
         /// <returns></returns>
         public static IEnumerable<PersistentInstance> GetAllBySceneUnload(Scene scene)
         {
-            return _persitentObjects.Where(x => x.PersistentAttribute.SceneUnload == scene.name);
+            return _persistentObjs
+                .Where(kv => kv.Value.PersistentAttribute.SceneUnload == scene.name).Select(kv => kv.Value);
         }
 
         /// <summary>
@@ -97,7 +98,8 @@ namespace Studious.PersistentManagement
         /// <returns></returns>
         public static IEnumerable<PersistentInstance> GetAllBySceneLoad(Scene scene)
         {
-            return _persitentObjects.Where(x => x.PersistentAttribute.Scene == scene.name);
+            return _persistentObjs
+                .Where(kv => kv.Value.PersistentAttribute.Scene == scene.name || kv.Value.PersistentAttribute.Scene == null).Select(kv => kv.Value);
         }
     }
 

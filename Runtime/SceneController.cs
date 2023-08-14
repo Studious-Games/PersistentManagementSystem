@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-using Object = UnityEngine.Object;
 
 namespace Studious.PersistentManagement
 {
@@ -29,26 +25,26 @@ namespace Studious.PersistentManagement
 
         private static void UnLoadPersistentComponents(Scene scene)
         {
-            //var scripts = PersistentLocator.GetAllBySceneUnload(scene).ToList();
+            var scripts = PersistentLocator.GetAllBySceneUnload(scene).ToList();
 
-            //foreach (var script in scripts)
-            //{
-            //    var test = GameObject.Find(script.SingletonAttribute.GroupName);
-            //    Object.Destroy(test);
-            //}
+            foreach (var script in scripts)
+            {
+                if (script.PersistentComponent == null)
+                    break;
+                script.RemoveFromGroup();
+            }
         }
 
         private static void LoadPersistentComponents(Scene scene)
         {
-            List<PersistentInstance> testPI = PersistentLocator.GetAll();
-
             var scripts = PersistentLocator.GetAllBySceneLoad(scene).ToList();
 
             foreach (var script in scripts)
             {
-                if(script.PersistentComponent == null)
-                    Debug.Log($"Component {script.Type}");
-            //    script.ScriptType.Invoke(null, null);
+                if (script.PersistentComponent == null)
+                {
+                    script.AddToGroup();
+                }
             }
         }
 

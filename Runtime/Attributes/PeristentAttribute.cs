@@ -7,7 +7,7 @@ namespace Studious.PersistentManagement
     public sealed class PersistentAttribute : Attribute
     {
         public HideFlags HideFlags { get; set; }
-        public string GroupName { get; set; }
+        public string GroupName { get; set; } = "PersistanceManager";
         public string Scene { get; set; }
         public string SceneUnload { get; set; }
 
