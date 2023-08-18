@@ -22,7 +22,7 @@ namespace Studious.PersistentManagement
             if (PersistentAttribute.IsValidGroupName() && group == null)
             {
                 GameObject go = new GameObject(PersistentAttribute.GroupName);
-                //go.hideFlags|= HideFlags.HideInHierarchy;
+                go.hideFlags|= HideFlags.HideInHierarchy;
                 MonoBehaviour.DontDestroyOnLoad(go);
                 group = go;
             }

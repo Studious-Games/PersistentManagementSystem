@@ -18,7 +18,7 @@ namespace Studious.PersistentManagement
             IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PersistentAttribute), true).Length > 0));
 
             GameObject manager = new GameObject("PersistanceManager");
-            //manager.hideFlags = HideFlags.HideInHierarchy;
+            manager.hideFlags = HideFlags.HideInHierarchy;
             MonoBehaviour.DontDestroyOnLoad(manager);
 
             foreach (var type in types)
