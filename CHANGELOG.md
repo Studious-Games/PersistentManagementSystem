@@ -6,6 +6,8 @@ Removed the depndency on having to use a list to hold the persistent scripts, in
 it so that when components are removed, they are not only removed, but any object they group they were attached to
 has nothing left it is also removed.
 
+Also fixed how the scene loading and unloading works.
+
 
 ## [1.0.0] - 2023-02-19
 

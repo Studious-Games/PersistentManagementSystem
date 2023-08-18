@@ -63,6 +63,17 @@ The following parameters can be used here.
 The GroupName helps keep the components grouped, the way the system works is that it creates a DonTDestroyOnLoad scene, where a Game Object will exist. Any class with an Attribute not using the `GroupName` 
 will be added to this GameObject. The `GroupName` allows for Scripts to be grouped across `GameObjects`, and keep the added components to a minimum on the Game Objects.
 
+#### **Scene**
+
+This parameter is to simply to tell what scene the script will begin to persist. What this means, is that when you have a few scenes like a loading scene and a game scene, the loading scene may not need to
+know anything about say a Game Manager. And therefore it will not be available at that time.
+
+#### **SceneUnload**
+
+This parameter is to simply say when you leave this scene I no longer want you to persist any more. Let's say you have a Menu Scene and a Settings Scene, and you there might be some scripts you would like to
+persist across these scenes only, and they are not to persist into the Game Scene. Then when the Game Scene is loaded, these scripts will then be removed and no longer available to the game scene. The same can
+be said for any Script that you wish to persist through some level scenes, that you do not want in the Menu Scene.
+
 ## Caveat
 
 Due to the way scenes are loaded, if you need to access a one of the persistent objects, you will need to do so in the `Start()` event and not the Awake(). In the future this can be changed once Unity allows the Ability to subscribe to Before Scene Loading, as it stands Unity only allow for subscribing to when a scene has loaded.
